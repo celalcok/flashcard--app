@@ -23,7 +23,7 @@ class App {
     this.importButton = document.getElementById("importButton");
     this.importInput = document.getElementById("importInput");
 
-    this.randomCheckbox = document.getElementById('randomCheckbox');
+    this.randomCheckbox = document.getElementById("randomCheckbox");
 
     this.currentFilter = "all"; // neuer Status: aktueller Filter
 
@@ -32,16 +32,15 @@ class App {
   }
 
   addEventListeners() {
+    this.nextButton.addEventListener("click", () => {
+      if (this.randomCheckbox.checked) {
+        this.manager.randomCard();
+      } else {
+        this.manager.nextCard();
+      }
+      this.updateDisplay();
+    });
 
-    this.nextButton.addEventListener('click', () => {
-        if (this.randomCheckbox.checked) {
-          this.manager.randomCard();
-        } else {
-          this.manager.nextCard();
-        }
-        this.updateDisplay();
-      });
-      
     this.exportButton.addEventListener("click", () => this.exportCards());
     this.importButton.addEventListener("click", () => this.importInput.click());
     this.importInput.addEventListener("change", (e) => this.importCards(e));
@@ -94,15 +93,14 @@ class App {
       }
     });
 
-    this.prevButton.addEventListener('click', () => {
-        if (this.randomCheckbox.checked) {
-          this.manager.randomCard();
-        } else {
-          this.manager.prevCard();
-        }
-        this.updateDisplay();
-      });
-      
+    this.prevButton.addEventListener("click", () => {
+      if (this.randomCheckbox.checked) {
+        this.manager.randomCard();
+      } else {
+        this.manager.prevCard();
+      }
+      this.updateDisplay();
+    });
 
     this.nextButton.addEventListener("click", () => {
       if (this.flashcardContainer.classList.contains("flip")) {
@@ -169,7 +167,11 @@ class App {
       this.flashcardContainer.classList.add(
         card.learned ? "learned" : "not-learned"
       );
-      this.counterElement.textContent = `${this.manager.currentIndex + 1} of ${
+      const currentCard = this.getCurrentFilteredCard();
+      const currentIndexInFiltered = filteredCards.findIndex(
+        (c) => c === currentCard
+      );
+      this.counterElement.textContent = `${currentIndexInFiltered + 1} of ${
         filteredCards.length
       }`;
     } else {
@@ -196,49 +198,45 @@ class App {
       setTimeout(() => {
         toast.remove();
       }, 500);
-    }, 3000); 
+    }, 3000);
   }
-
 
   exportCards() {
     const dataStr = JSON.stringify(this.manager.cards, null, 2);
-    const blob = new Blob([dataStr], { type: 'application/json' });
+    const blob = new Blob([dataStr], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-  
-    const a = document.createElement('a');
+
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'flashcards.json';
+    a.download = "flashcards.json";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }
 
-  
   importCards(event) {
     const file = event.target.files[0];
     if (!file) return;
-  
+
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
         const importedCards = JSON.parse(e.target.result);
-  
 
-        importedCards.forEach(card => {
+        importedCards.forEach((card) => {
           this.manager.addCard(card.question, card.answer);
         });
-  
+
         this.updateDisplay();
-        this.showToast('✅ Cards imported successfully!');
+        this.showToast("✅ Cards imported successfully!");
       } catch (err) {
-        this.showToast('❌ Failed to import cards.');
+        this.showToast("❌ Failed to import cards.");
         console.error(err);
       }
     };
     reader.readAsText(file);
   }
-  
 }
 
 new App();

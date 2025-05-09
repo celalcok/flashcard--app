@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flashcards App</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <h1>Flashcards App</h1>
+    <div class="filter-toggle">
+        <input type="radio" name="filter" id="filterAll" value="all" checked>
+        <label for="filterAll">All Cards</label>
+      
+        <input type="radio" name="filter" id="filterUnlearned" value="unlearned">
+        <label for="filterUnlearned">Unlearned</label>
+      
+        <input type="radio" name="filter" id="filterLearned" value="learned">
+        <label for="filterLearned">Learned</label>
+      </div>
+
+    <p id="counter"></p>
+    <div class="flashcard-main-container">
+        <div id="flashcard-container">
+        
+        </div>
+        <label class="random-toggle">
+            <input type="checkbox" id="randomCheckbox">
+            Random Order
+          </label>
+          
+    </div>
+    <div class="bottom-controls">
+        <button id="openModalButton">➕ Add New Card</button>
+        <button id="exportButton">Export Cards</button>
+<input type="file" id="importInput" style="display:none;">
+<button id="importButton">Import Cards</button>
+
+    </div>
+
+    <div class="controls">
+      <button id="prevButton">Previous</button>
+      <button id="nextButton">Next</button>
+      <button id="flipButton">Flip</button>
+      <button id="learnedButton">Mark as Learned</button>
+      <button id="deleteButton">Delete Card</button>
+      <button id="clearAllButton">Clear All Cards</button>
+
+    </div>
+
+  </div>
+
+
+  <!-- Modal -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <h2>Add New Flashcard</h2>
+      <input type="text" id="questionInput" placeholder="Enter question">
+      <input type="text" id="answerInput" placeholder="Enter answer">
+      <button id="addCardButton">Add Card</button>
+    </div>
+  </div>
+  
+  <div id="toastContainer"></div>
+
+  <script type="module" src="js/App.js"></script>
+</body>
+</html>
